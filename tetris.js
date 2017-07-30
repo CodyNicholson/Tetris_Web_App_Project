@@ -138,6 +138,7 @@ function playerReset() {
     player.pos.y = 0;
     player.pos.x = (arena[0].length/2|0) - (player.matrix[0].length/2|0);
     if (collide(arena, player)){
+        alert("Your score is " + player.score + ". Press 'OK' to restart.")
         arena.forEach(row => row.fill(0));
         player.score = 0;
         updateScore();
@@ -182,7 +183,7 @@ function rotate(matrix, dir) {
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
-let checkpoint = 100;
+let checkpoint = 50;
 
 function update(time = 0) {
     const deltaTime = time - lastTime;
@@ -192,7 +193,6 @@ function update(time = 0) {
     if(dropCounter > dropInterval){
         playerDrop();
     }
-
     draw();
     requestAnimationFrame(update);
 }
@@ -201,7 +201,7 @@ function updateScore(){
     document.getElementById("score").innerText = player.score;
     if (player.score >= checkpoint) {
         dropInterval -= 100;
-        checkpoint += 100;
+        checkpoint += 50;
     }
 }
 
@@ -239,6 +239,7 @@ document.addEventListener('keydown', event => {
     }
 });
 
+alert("Hello! This is a Tetris game I made. Use the arrow keys to move pieces and the 'q' and 'w' keys to rotate them. Good luck!");
 updateScore();
 playerReset();
 update();
