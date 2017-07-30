@@ -141,6 +141,8 @@ function playerReset() {
         alert("Your score is " + player.score + ". Press 'OK' or 'Enter' to restart.")
         arena.forEach(row => row.fill(0));
         player.score = 0;
+        dropInterval = 1000;
+        checkpoint = 50;
         updateScore();
     }
 }
