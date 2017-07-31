@@ -238,6 +238,9 @@ document.addEventListener('keydown', event => {
         playerRotate(-1)
     } else if (event.keyCode === 87) {
         playerRotate(1)
+    } else if (event.keyCode === 50) {
+        player.score *= 2;
+        updateScore();
     }
 });
 
