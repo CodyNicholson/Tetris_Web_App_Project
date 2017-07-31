@@ -1,5 +1,5 @@
-const canvas = document.getElementById('tetris');
-const context = canvas.getContext('2d');
+const canvas = document.getElementById("tetris");
+const context = canvas.getContext("2d");
 context.scale(20,20);
 
 function arenaSweep(){
@@ -40,43 +40,43 @@ function createMatrix(w,h){
 }
 
 function createPiece(type){
-    if (type === 'T'){
+    if (type === "T"){
         return [
             [0,0,0],
             [1,1,1],
             [0,1,0],
         ];
-    } else if (type === 'O') {
+    } else if (type === "O") {
         return [
             [2,2],
             [2,2]
         ];
-    } else if (type === 'L'){
+    } else if (type === "L"){
         return [
             [0,3,0],
             [0,3,0],
             [0,3,3],
         ];
-    } else if (type === 'J'){
+    } else if (type === "J"){
         return [
             [0,4,0],
             [0,4,0],
             [4,4,0],
         ];
-    } else if (type === 'I'){
+    } else if (type === "I"){
         return [
             [0,5,0,0],
             [0,5,0,0],
             [0,5,0,0],
             [0,5,0,0],
         ];
-    } else if (type === 'S'){
+    } else if (type === "S"){
         return [
             [0,6,6],
             [6,6,0],
             [0,0,0],
         ];
-    } else if (type === 'Z'){
+    } else if (type === "Z"){
         return [
             [7,7,0],
             [0,7,7],
@@ -133,7 +133,7 @@ function playerMove(dir) {
 }
 
 function playerReset() {
-    const pieces = 'ILJOTSZ';
+    const pieces = "ILJOTSZ";
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (arena[0].length/2|0) - (player.matrix[0].length/2|0);
@@ -209,13 +209,13 @@ function updateScore(){
 
 const colors = [
     null,
-    '#FF0D72',
-    '#0DC2FF',
-    '#0DFF72',
-    '#F538FF',
-    '#FF8E0D',
-    '#FFE138',
-    '#3877FF',
+    "#FF0D72",
+    "#0DC2FF",
+    "#0DFF72",
+    "#F538FF",
+    "#FF8E0D",
+    "#FFE138",
+    "#3877FF",
 ];
 
 const arena = createMatrix(12,20);
@@ -226,7 +226,7 @@ const player = {
     score: 0
 }
 
-document.addEventListener('keydown', event => {
+document.addEventListener("keydown", event => {
     //console.log(event);
     if (event.keyCode === 37) {
         playerMove(-1);
