@@ -244,7 +244,7 @@ document.addEventListener('keydown', event => {
     }
 });
 
-window.onload = alert("Hello! This is a Tetris game I made. Use the arrow keys to move pieces and the 'q' and 'w' keys to rotate them. Good luck!");
 updateScore();
 playerReset();
 update();
+window.onload = alert("Hello! This is a Tetris game I made. Use the arrow keys to move pieces and the 'q' and 'w' keys to rotate them. Good luck!");
