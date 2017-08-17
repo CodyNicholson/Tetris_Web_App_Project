@@ -201,7 +201,7 @@ function update(time = 0) {
 
 function updateScore(){
     document.getElementById("score").innerText = player.score;
-    if (player.score >= checkpoint < 500) {
+    if (player.score >= checkpoint && player.score < 500) {
         dropInterval -= 100;
         checkpoint += 50;
         // 50 900, 100, 800, 150 700, 200 600, 250 500, 300 400, 350 300, 400 200, 450 100
