@@ -4,6 +4,26 @@ context.scale(20,20);
 
 let hdrTxt = document.getElementById("score");
 
+const colors = [
+    null,
+    "#FF0D72",
+    "#0DC2FF",
+    "#0DFF72",
+    "#F538FF",
+    "#FF8E0D",
+    "#FFE138",
+    "#3877FF",
+];
+
+const arena = createMatrix(12,20);
+
+const player = {
+    pos: {x: 0, y:0},
+    matrix: null,
+    score: 0,
+    playing: true
+}
+
 // Remove completed rows
 function arenaSweep(){
     let rowCount = 1;
@@ -205,7 +225,9 @@ function playerDrop() {
         merge(arena, player);
         playerReset();
         arenaSweep();
-        updateScore();
+        if (player.playing) {
+            updateScore();
+        }
     }
     dropCounter = 0;
 }
@@ -219,13 +241,13 @@ function playerMove(dir) {
 
 function playerReset() {
     const pieces = "ILJOTSZ";
-    
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (arena[0].length/2|0) - (player.matrix[0].length/2|0);
 
     // If the new piece cannot be placed end game
     if (collide(arena, player)){
+        player.playing = false;
         hdrTxt.style.animation = "blinker 1s linear infinite";
         hdrTxt.innerText = "FINAL SCORE: " + player.score;
         document.addEventListener('keydown', startGame);
@@ -282,38 +304,20 @@ function update(time = 0) {
     }
 
     draw();
-    requestAnimationFrame(update);
+
+    if (player.playing) {
+        requestAnimationFrame(update);
+    }
 }
 
 function updateScore(){
-    if (player.matrix != null) {
-        hdrTxt.innerText = player.score;
-    }
+    hdrTxt.innerText = player.score;
 
     if (player.score >= checkpoint && player.score < 500) {
         dropInterval -= 100;
         checkpoint += 50;
         // 50 900, 100, 800, 150 700, 200 600, 250 500, 300 400, 350 300, 400 200, 450 100
     }
-}
-
-const colors = [
-    null,
-    "#FF0D72",
-    "#0DC2FF",
-    "#0DFF72",
-    "#F538FF",
-    "#FF8E0D",
-    "#FFE138",
-    "#3877FF",
-];
-
-const arena = createMatrix(12,20);
-
-const player = {
-    pos: {x: 0, y:0},
-    matrix: null,
-    score: 0
 }
 
 document.addEventListener("keydown", event => {
@@ -339,9 +343,10 @@ function clearBoard() {
 }
 
 function startGame() {
+    player.score = 0;
+    player.playing = true;
     document.removeEventListener('keydown', startGame);
     hdrTxt.style.animation = "none";
-    playerReset();
     clearBoard();
     updateScore();
     update();
