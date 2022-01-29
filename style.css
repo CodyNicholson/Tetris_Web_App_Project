@@ -5,11 +5,25 @@ body {
     font-size: 2em;
     text-align: center;
 }
+
 canvas {
     border: solid .2em #fff;
     height: 90vh;
 }
+
 h2 {
     position: absolute;
     top: 200px;
+}
+
+#score {
+    font-size: 0.8em;
+    padding-bottom: 5px;
+    animation: blinker 1s linear infinite;
+}
+  
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
 }

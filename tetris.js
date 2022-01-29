@@ -2,6 +2,9 @@ const canvas = document.getElementById("tetris");
 const context = canvas.getContext("2d");
 context.scale(20,20);
 
+let hdrTxt = document.getElementById("score");
+
+// Remove completed rows
 function arenaSweep(){
     let rowCount = 1;
     outer: for (let y = arena.length - 1; y > 0; y--) {
@@ -103,6 +106,88 @@ function drawMatrix(matrix, offset) {
     });
 }
 
+function drawTitle() {
+    // T
+    arena[1][1] = 1;
+    arena[1][2] = 1;
+    arena[1][3] = 1;
+    arena[1][4] = 1;
+    arena[1][5] = 1;
+    arena[2][3] = 1;
+    arena[3][3] = 1;
+    arena[4][3] = 1;
+    arena[5][3] = 1;
+    // E
+    arena[2][7] = 2;
+    arena[2][8] = 2;
+    arena[2][9] = 2;
+    arena[2][10] = 2;
+    arena[3][7] = 2;
+    arena[4][7] = 2;
+    arena[5][7] = 2;
+    arena[6][7] = 2;
+    arena[6][8] = 2;
+    arena[6][9] = 2;
+    arena[6][10] = 2;
+    arena[4][8] = 2;
+    arena[4][9] = 2;
+    // T
+    arena[7][1] = 3;
+    arena[7][2] = 3;
+    arena[7][3] = 3;
+    arena[7][4] = 3;
+    arena[7][5] = 3;
+    arena[8][3] = 3;
+    arena[9][3] = 3;
+    arena[10][3] = 3;
+    arena[11][3] = 3;
+    // R
+    arena[8][7] = 4;
+    arena[8][8] = 4;
+    arena[8][9] = 4;
+    arena[8][10] = 4;
+    arena[9][10] = 4;
+    arena[9][7] = 4;
+    arena[10][7] = 4;
+    arena[10][10] = 4;
+    arena[11][7] = 4;
+    arena[12][7] = 4;
+    arena[11][9] = 4;
+    arena[12][10] = 4;
+    arena[10][9] = 4;
+    arena[10][8] = 4;
+    // I
+    arena[13][1] = 5;
+    arena[13][2] = 5;
+    arena[13][3] = 5;
+    arena[13][4] = 5;
+    arena[13][5] = 5;
+    arena[14][3] = 5;
+    arena[15][3] = 5;
+    arena[16][3] = 5;
+    arena[17][1] = 5;
+    arena[17][2] = 5;
+    arena[17][3] = 5;
+    arena[17][4] = 5;
+    arena[17][5] = 5;
+    // S
+    arena[14][7] = 6;
+    arena[14][8] = 6;
+    arena[14][9] = 6;
+    arena[14][10] = 6;
+    arena[15][7] = 6;
+    arena[16][7] = 6;
+    arena[17][10] = 6;
+    arena[18][7] = 6;
+    arena[18][8] = 6;
+    arena[18][9] = 6;
+    arena[18][10] = 6;
+    arena[16][8] = 6;
+    arena[16][9] = 6;
+    arena[16][10] = 6;
+    drawMatrix(arena, {x: 0, y:0});
+}
+
 function merge(arena, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -134,16 +219,16 @@ function playerMove(dir) {
 
 function playerReset() {
     const pieces = "ILJOTSZ";
+    
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (arena[0].length/2|0) - (player.matrix[0].length/2|0);
+
+    // If the new piece cannot be placed end game
     if (collide(arena, player)){
-        alert("Your score is " + player.score + ". Press 'OK' or 'Enter' to restart.")
-        arena.forEach(row => row.fill(0));
-        player.score = 0;
-        dropInterval = 1000;
-        checkpoint = 50;
-        updateScore();
+        hdrTxt.style.animation = "blinker 1s linear infinite";
+        hdrTxt.innerText = "FINAL SCORE: " + player.score;
+        document.addEventListener('keydown', startGame);
     }
 }
 
@@ -195,12 +280,16 @@ function update(time = 0) {
     if(dropCounter > dropInterval){
         playerDrop();
     }
+
     draw();
     requestAnimationFrame(update);
 }
 
 function updateScore(){
-    document.getElementById("score").innerText = player.score;
+    if (player.matrix != null) {
+        hdrTxt.innerText = player.score;
+    }
+
     if (player.score >= checkpoint && player.score < 500) {
         dropInterval -= 100;
         checkpoint += 50;
@@ -245,7 +334,22 @@ document.addEventListener("keydown", event => {
     }
 });
 
-updateScore();
+function clearBoard() {
+    arena.forEach(row => row.fill(0));
+}
+
+function startGame() {
+    document.removeEventListener('keydown', startGame);
+    hdrTxt.style.animation = "none";
+    playerReset();
+    clearBoard();
+    updateScore();
+    update();
+}
+
+hdrTxt.innerText = "Click any key to play";
 playerReset();
-update();
-window.onload = alert("Hello! This is a Tetris game I made. Use the arrow keys to move pieces and the 'q' and 'w' keys to rotate them. Good luck!");
+drawTitle();
+
+document.addEventListener('keydown', startGame);
+
