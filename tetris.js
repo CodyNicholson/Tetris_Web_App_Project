@@ -321,18 +321,17 @@ function updateScore(){
 }
 
 document.addEventListener("keydown", event => {
-    //console.log(event);
-    if (event.keyCode === 37) {
+    if (event.keyCode === 37) { // Arrow Left
         playerMove(-1);
-    } else if (event.keyCode === 39) {
+    } else if (event.keyCode === 39) { // Arrow Right
         playerMove(1);
-    } else if (event.keyCode === 40) {
+    } else if (event.keyCode === 40) { // Arrow Down
         playerDrop();
-    } else if (event.keyCode === 81) {
+    } else if (event.keyCode === 90) { // "Z"
         playerRotate(-1)
-    } else if (event.keyCode === 87) {
+    } else if (event.keyCode === 88) { // "X"
         playerRotate(1)
-    } else if (event.keyCode === 50) {
+    } else if (event.keyCode === 50) { // Digit 2
         player.score *= 2;
         updateScore();
     }
